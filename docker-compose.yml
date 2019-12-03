@@ -2,8 +2,8 @@ version: "3"
 
 services:
   app:
-    container_name: reactapp
-    image: reactapp:latest
+    container_name: react-redux-app
+    image: react-redux-app:latest
     build:
       context: .
       args:
