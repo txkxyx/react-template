@@ -1,6 +1,6 @@
 ARG NODE_TAG=12
 ARG NGINX_TAG=alpine
-ARG APP_HOME=/home/node/app
+ARG APP_HOME=/usr/src/app
 
 # build stage
 FROM node:${NODE_TAG} as build
@@ -8,14 +8,11 @@ ARG NODE_TAG
 ARG APP_HOME
 
 WORKDIR ${APP_HOME}
-COPY package*.json ${APP_HOME}/
-RUN echo -n 'node '; node -v; \
-    echo -n 'npm '; npm -v ; \
-    npm install --production
+COPY package*.json yarn.lock ./
+RUN yarn
 
-COPY src ${APP_HOME}/src/
-COPY public ${APP_HOME}/public/
-RUN npm run build
+COPY . ./
+RUN yarn build
 
 # deploy stage
 FROM nginx:${NGINX_TAG}
